@@ -2,7 +2,7 @@ import os
 import glob
 import pandas as pd
 
-def preprocess_data(base_dir="./", output_dir="./processed"):
+def preprocess_data(base_dir="./runs", output_dir="./processed"):
     print("Starting data preprocessing...")
     
     labels_data = []
