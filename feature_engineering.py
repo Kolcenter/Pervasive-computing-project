@@ -9,19 +9,19 @@ def run_feature_engineering(input_dir="./processed", output_dir="./training_data
     print("Starting tsfresh feature engineering...")
     os.makedirs(output_dir, exist_ok=True)
 
-    # This will extract only ~10 basic, powerful stats per sensor, which is ideal for our small dataset 
+    # This will extract only ~10 basic, which is ideal for our small dataset
     extraction_settings = MinimalFCParameters()
 
     extracted_dataframes = []
 
-    # 3. Extract features
+    # extract features
     master_files = glob.glob(os.path.join(input_dir, "master_*.csv"))
     for file_path in master_files:
     
         sensor_name = os.path.basename(file_path).replace(".csv", "").replace("master_", "")
         if sensor_name in exclude_sensors: 
             continue # skip if this sensor is in the exclude list
-        print(f"Extracting features for: {sensor_name.upper()}")
+        print(f"Extracting features for: {sensor_name}")
         
         df = pd.read_csv(file_path)
         
@@ -34,19 +34,19 @@ def run_feature_engineering(input_dir="./processed", output_dir="./training_data
         )
         extracted_dataframes.append(features)
 
-    # 4. Merge
+    # merge
     print("\nMerging data...")
     X_master = pd.concat(extracted_dataframes, axis=1)
 
-    # 5. Clean up missing values
+    # clean up missing values
     impute(X_master)
 
-    # We skip feature selection and let xgboost handle it
+    # skip feature selection and let xgboost handle it
     X_selected = X_master 
 
     print(f"Total features kept for training: {X_selected.shape[1]}")
 
-    # 6. Save the data and the feature list
+    # save the data and the feature list
     final_dataset_path = os.path.join(output_dir, "X_selected_features.csv")
     X_selected.to_csv(final_dataset_path)
     
