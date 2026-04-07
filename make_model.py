@@ -7,9 +7,12 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 def train_and_evaluate(features_path="./training_data/X_selected_features.csv",
                        labels_path="./processed/y_labels.csv",
+                       custom_labels=False,
+                       custom_labels_path="./processed/y_labels_custom.csv",
                        model_output_path="./models/model.json"):
     
     # 1. Load Data
+    labels_path = custom_labels_path if custom_labels else labels_path
     if not os.path.exists(features_path) or not os.path.exists(labels_path):
         print("Error: Could not find the data files.")
         return

@@ -9,15 +9,6 @@ def run_feature_engineering(input_dir="./processed", output_dir="./training_data
     print("Starting tsfresh feature engineering...")
     os.makedirs(output_dir, exist_ok=True)
 
-    # 1. Load the target labels
-    labels_file = os.path.join(input_dir, "y_labels.csv")
-    if not os.path.exists(labels_file):
-        print("Could not find y_labels.csv")
-        return
-    
-    labels_df = pd.read_csv(labels_file)
-    y = labels_df.set_index("Ride_ID")["Distraction_Score"]
-
     # This will extract only ~10 basic, powerful stats per sensor, which is ideal for our small dataset 
     extraction_settings = MinimalFCParameters()
 
