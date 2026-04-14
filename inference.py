@@ -82,6 +82,7 @@ def predict_score(new_ride_folder="./OpenWearable_Recording_2026-03-26T101935.30
     prediction = model.predict(live_features_aligned)[0]
 
     print(f"Calculated distraction score: {prediction:.2f} / 4.0")
+    return prediction
 
 if __name__ == "__main__":
     predict_score()
