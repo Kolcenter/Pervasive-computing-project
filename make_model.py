@@ -8,8 +8,8 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error
 def train_and_evaluate(features_path="./training_data/X_selected_features.csv",
                        labels_path="./processed/y_labels.csv",
                        custom_labels=False,
-                       custom_labels_path="./processed/y_labels_custom.csv",
-                       model_output_path="./models/model.json"):
+                       custom_labels_path="./y_labels_custom.csv",
+                       model_output_path="./models/"):
     
     labels_path = custom_labels_path if custom_labels else labels_path
     if not os.path.exists(features_path) or not os.path.exists(labels_path):
@@ -75,7 +75,10 @@ def train_and_evaluate(features_path="./training_data/X_selected_features.csv",
     # now that we know the true accuracy, we use all 12 rides to make the best possible model for the app
     model.fit(X_clean, y_clean)
     
-    model.save_model(model_output_path)
-    print(f"Trained model saved to: {model_output_path}")
+    # make directory if it doesn't exist
+    os.makedirs(os.path.dirname(model_output_path), exist_ok=True)
+    model_name = os.path.join(model_output_path, "model.json")
+    model.save_model(model_name)
+    print(f"Trained model saved to: {model_name}")
 if __name__ == "__main__":
     train_and_evaluate()
