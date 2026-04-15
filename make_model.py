@@ -44,12 +44,12 @@ def train_and_evaluate(features_path="./training_data/X_selected_features.csv",
     y_true_all = []
     y_pred_all = []
     
-    # train 12 separate models to test accuracy
+    # train 25 separate models to test accuracy
     for train_index, test_index in loo.split(X_clean):
         X_train, X_test = X_clean.iloc[train_index], X_clean.iloc[test_index]
         y_train, y_test = y_clean.iloc[train_index], y_clean.iloc[test_index]
         
-        # train on 11 rides
+        # train on 24 rides
         model.fit(X_train, y_train)
         
         # predict the 1 hidden ride
@@ -72,7 +72,7 @@ def train_and_evaluate(features_path="./training_data/X_selected_features.csv",
 
     # train the FINAL Production Model
     print("\nTraining final production model on 100% of the data...")
-    # now that we know the true accuracy, we use all 12 rides to make the best possible model for the app
+    # now that we know the true accuracy, we use all 25 rides to make the best possible model for the app
     model.fit(X_clean, y_clean)
     
     # make directory if it doesn't exist

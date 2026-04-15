@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from xgboost import XGBRegressor
+import matplotlib.pyplot as plt
 
 
 def analyze_feature_importance(model_path="./models/model.json", feature_list_path="./training_data/selected_feature_names.txt", output_csv_path="./models/feature_importance.csv"):
@@ -52,5 +53,34 @@ def analyze_feature_importance(model_path="./models/model.json", feature_list_pa
     importance_df.to_csv(output_csv_path, index=False)
     print(f"\nFull importance ranking saved to: {output_csv_path}")
 
+def plot_feature_importance():
+
+    df = pd.read_csv("models/feature_importance.csv")
+    
+    # top 10
+    top_features = df.head(10).sort_values(by="Importance", ascending=True)
+    
+    # clean up the feature names for the graph
+    clean_names = []
+    for name in top_features['Feature']:
+        parts = name.split('__')
+        sensor_part = parts[0].replace('_', ' ').title()
+        stat_part = parts[1].replace('_', ' ').title()
+        clean_names.append(f"{sensor_part}: {stat_part}")
+        
+    plt.figure(figsize=(10, 6))
+    plt.barh(clean_names, top_features['Importance'], color='steelblue', edgecolor='black')
+    
+    plt.xlabel('Relative feature importance', fontsize=12, fontweight='bold')
+    plt.title('Top 10 most predictive features', fontsize=14, fontweight='bold')
+    plt.grid(axis='x', linestyle='--', alpha=0.7)
+    
+    plt.tight_layout()
+    
+    plt.savefig('models/feature_importance_plot.png', dpi=300)
+    print("Graph saved as feature_importance_plot.png")
+
+
 if __name__ == "__main__":
     analyze_feature_importance()
+    plot_feature_importance()

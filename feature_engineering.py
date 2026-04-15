@@ -9,7 +9,7 @@ def run_feature_engineering(input_dir="./processed", output_dir="./training_data
     print("Starting tsfresh feature engineering...")
     os.makedirs(output_dir, exist_ok=True)
 
-    # This will extract only ~10 basic, which is ideal for our small dataset
+    # This will extract only 10 basic, which is ideal for our small dataset
     extraction_settings = MinimalFCParameters()
 
     extracted_dataframes = []
